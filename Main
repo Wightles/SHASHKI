@@ -1,0 +1,65 @@
+package ru.nstu.rgz;
+
+import ru.nstu.rgz.view.AccueilView;
+import ru.nstu.rgz.view.GameView;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+
+public class Main extends Application {
+    // Константы для ширины и высоты окна игры
+    public static final int WIN_WIDTH_GAME = 1080;
+    public static final int WIN_HEIGHT_GAME = 720;
+    // Константы для ширины и высоты стартового окна
+    public static final int WIN_WIDTH_ACCUEIL = 300;
+    public static final int WIN_HEIGHT_ACCUEIL = 270;
+
+    private Stage primaryStage;
+    private Scene gameScene;
+
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+
+        try {
+            // Создание корневого элемента для сцены игры
+            BorderPane gameRoot = new BorderPane();
+            // Инициализация вида игры
+            GameView.initView(gameRoot, primaryStage);
+            // Создание сцены игры с заданными размерами
+            gameScene = new Scene(gameRoot, WIN_WIDTH_GAME, WIN_HEIGHT_GAME);
+
+            // Создание корневого элемента для сцены настроек игры
+            StackPane gameSettingsRoot = new StackPane();
+            // Инициализация вида настроек игры
+            AccueilView.initView(gameSettingsRoot, primaryStage, gameScene);
+            // Создание сцены настроек игры с заданными размерами
+            Scene gameSettingsScene = new Scene(gameSettingsRoot, WIN_WIDTH_ACCUEIL, WIN_HEIGHT_ACCUEIL);
+
+            // Установка начальной сцены
+            primaryStage.setScene(gameSettingsScene);
+            // Разрешение изменения размеров окна
+            primaryStage.setResizable(true);
+            // Центрирование окна при показе
+            primaryStage.setOnShown(event -> primaryStage.centerOnScreen());
+            // Показ окна
+            primaryStage.show();
+
+            // Установка иконки окна
+            Image icon = new Image(getClass().getResource("/sashki.png").toExternalForm());
+            primaryStage.getIcons().add(icon);
+            // Установка заголовка окна
+            primaryStage.setTitle("Шашки");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Метод запуска приложения
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
